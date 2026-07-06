@@ -1,0 +1,107 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────
+   HPS Geospatial — luxury design tokens
+   Palette: parchment beige · deep plum purple · estate green · gold
+   ───────────────────────────────────────────────────────────── */
+
+@theme {
+  /* Beige / neutrals */
+  --color-parchment: #f4efe4;
+  --color-cream: #faf7ef;
+  --color-sand: #e8dfcb;
+  --color-taupe: #9c8f76;
+
+  /* Purple */
+  --color-plum: #46345e;
+  --color-plum-deep: #32254a;
+  --color-ink: #221a30;
+
+  /* Green */
+  --color-estate: #24443a;
+  --color-moss: #3e6653;
+  --color-sage: #93a98d;
+
+  /* Gold */
+  --color-gold: #b08d2e;
+  --color-gold-bright: #d4af37;
+  --color-gold-pale: #e9d9a8;
+
+  --font-display: var(--font-cormorant), "Cormorant Garamond", Didot,
+    "Bodoni MT", Georgia, serif;
+  --font-sans: var(--font-manrope), Manrope, "Avenir Next", "Segoe UI",
+    sans-serif;
+
+  --tracking-luxe: 0.22em;
+
+  --animate-rise: rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(1.25rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-parchment);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-feature-settings: "kern", "liga";
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-plum);
+  color: var(--color-gold-pale);
+}
+
+/* ── Reusable primitives ─────────────────────────────────────── */
+
+@utility container-luxe {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 76rem;
+  padding-inline: 1.5rem;
+  @media (width >= 48rem) {
+    padding-inline: 3rem;
+  }
+}
+
+/* Small-caps kicker label, e.g. "OUR SERVICES" */
+@utility kicker {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: var(--tracking-luxe);
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+/* Gold hairline rule */
+@utility rule-gold {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    var(--color-gold) 0%,
+    color-mix(in oklab, var(--color-gold) 25%, transparent) 100%
+  );
+}
+
+@utility text-balance {
+  text-wrap: balance;
+}
