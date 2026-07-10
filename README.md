@@ -65,18 +65,21 @@ runs anywhere Node 20+ or a container runs. Guides below for
 
 ## Before deploying (any platform)
 
-1. **Environment variables** — from `.env.example`:
+1. **Environment variables** — every platform asks for these as **Key**
+   (the variable's name, exactly as spelled below) and **Value** (what it
+   should be set to):
 
-   | Variable | Required | Notes |
+   | Key | Required | Value — what to enter and where to find it |
    | --- | --- | --- |
-   | `NEXT_PUBLIC_SITE_URL` | Recommended | Canonical URL for metadata/OG tags, e.g. `https://hpsgeospatial.com` |
-   | `SUPABASE_URL` | For contact form | Project URL from Supabase dashboard |
-   | `SUPABASE_SERVICE_ROLE_KEY` | For contact form | Server-only secret — never expose client-side |
-   | `NEXT_PUBLIC_SANITY_PROJECT_ID` | No | Defaults to `bv8toflp` |
-   | `NEXT_PUBLIC_SANITY_DATASET` | No | Defaults to `production` |
+   | `NEXT_PUBLIC_SITE_URL` | Recommended | The site's public URL, e.g. `https://hpsgeospatial.com`. Only used for SEO/social-preview metadata — if you don't know the URL until after the first deploy, deploy without it, then add it and redeploy. |
+   | `SUPABASE_URL` | For contact form | Your Supabase project URL, e.g. `https://abcdefgh.supabase.co` — Supabase dashboard → **Project Settings → API → Project URL**. |
+   | `SUPABASE_SERVICE_ROLE_KEY` | For contact form | The long `service_role` key from that same **Project Settings → API** page. Server-only secret — mark it as sensitive/secret on your platform and never expose it client-side. |
+   | `NEXT_PUBLIC_SANITY_PROJECT_ID` | No | Only to point at a different Sanity project; defaults to `bv8toflp` in code. |
+   | `NEXT_PUBLIC_SANITY_DATASET` | No | Only to point at a different dataset; defaults to `production` in code. |
 
-   Without the Supabase vars the site still deploys; the contact form asks
-   visitors to email directly instead of storing the lead.
+   **None are strictly required for a first deploy** — with no variables set
+   the site builds and serves CMS content normally; the contact form asks
+   visitors to email directly until the Supabase vars are added.
 
 2. **Sanity CORS** — after you know your production domain, add it (with
    credentials allowed) in
@@ -104,13 +107,20 @@ Zero-config path; Vercel builds Next.js natively.
 1. Push the repo to GitHub and import it at
    [vercel.com/new](https://vercel.com/new). Framework preset auto-detects as
    Next.js — keep the default build command (`next build`) and output.
-2. Add the environment variables (table above) under
-   **Project → Settings → Environment Variables**, for the Production
-   environment (and Preview if you want branch deploys to store leads).
+2. On the import screen (or later under **Project → Settings → Environment
+   Variables**), add each variable from the table above: put the variable
+   name in **Key** and its value in **Value** — e.g. Key
+   `SUPABASE_URL`, Value `https://abcdefgh.supabase.co`. Leave the
+   environment scope as *Production and Preview* (or Production-only if you
+   don't want branch previews storing leads), and keep the sensitive toggle
+   on for `SUPABASE_SERVICE_ROLE_KEY`. You can also skip them all and hit
+   **Deploy** — everything except lead storage works without them.
 3. Deploy. Every push to the default branch redeploys production; pushes to
    other branches create preview URLs.
-4. Add your custom domain under **Settings → Domains** and set
-   `NEXT_PUBLIC_SITE_URL` to it.
+4. Add your custom domain under **Settings → Domains**, then set
+   `NEXT_PUBLIC_SITE_URL` to it (Key: `NEXT_PUBLIC_SITE_URL`, Value:
+   `https://your-domain.com` — or the assigned `https://….vercel.app` URL if
+   you're not using a custom domain) and redeploy.
 5. Add the domain (and optionally `https://*.vercel.app` for previews) to
    Sanity CORS origins so `/studio` works.
 
